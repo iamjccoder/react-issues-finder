@@ -11,9 +11,7 @@ const SearchIssues = ({reactIssues, updateFilteredIssues}) => {
     };
 
     return (
-        <form>
-            <input type="text" onChange={ (event) => findIssues(event.target.value) } />
-        </form>
+        <input type="text" onChange={ (event) => findIssues(event.target.value) } class="form-control" placeholder="Enter issue title" />
     );
 }
 
