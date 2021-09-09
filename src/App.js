@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import SearchIssues from './components/SearchIssues';
+import IssuesList from './components/IssuesList';
 
 function App() {
+  const searchIssuesEndpoint = 'https://api.github.com/repos/facebook/react/issues';
+
+  const [reactIssues, updateIssues] = useState([]);
+  const [filteredIssues, updateFilteredIssues] = useState([]);
+
+  const getReactIssues = () => {
+    fetch(searchIssuesEndpoint)
+    .then(response => response.json())
+    .then(issues => {
+      updateIssues(issues);
+      updateFilteredIssues(issues);
+    })
+    .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    getReactIssues();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchIssues reactIssues={reactIssues} updateFilteredIssues={updateFilteredIssues} />
+      <IssuesList filteredIssues={filteredIssues} />
     </div>
   );
 }
